@@ -47,8 +47,8 @@ namespace N_Gewinnt
                 int.TryParse(txt_rows.Text, out int rows);
                 int.TryParse(txt_n.Text, out int n);
 
-                if (columns > 3 &&
-                    rows > 3 &&
+                if (columns >= 3 && columns <= 99 &&
+                    rows >= 3 && rows <= 99 &&
                     n < Math.Min(rows, columns))
                 {
                     DialogResult = true;
