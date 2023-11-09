@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:N_Gewinnt"
         mc:Ignorable="d"
-        Title="N-Gewinnt by Curtes" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Wnd_Loaded">
+        Title="N-Gewinnt by Curtes" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized" Loaded="Wnd_Loaded" KeyDown="Wnd_KeyDown">
     <Canvas x:Name="Cvs">
         
     </Canvas>

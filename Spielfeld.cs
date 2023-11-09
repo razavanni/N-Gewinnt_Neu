@@ -20,6 +20,7 @@ namespace N_Gewinnt
         public double paddingY { get; set; }
         public Canvas Cvs { get; set; }
         public int currentPlayer { get; set; }
+        public double cellHeight { get; set; }
 
         public Spielfeld(int columns, int rows, double paddingX, double paddingY, Canvas c, int currentPlayer)
         {
@@ -40,6 +41,7 @@ namespace N_Gewinnt
             screenHeight = SystemParameters.PrimaryScreenHeight;
 
             cellWidth = (screenWidth * 0.9 - paddingX) / columns;
+            cellHeight = (screenHeight * 0.9  - paddingY) / columns;
             maxBoardHeight = screenHeight * 0.9;
 
             boardHeight = rows * chip.diameter;

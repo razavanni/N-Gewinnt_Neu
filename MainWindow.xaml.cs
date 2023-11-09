@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace N_Gewinnt
 {
@@ -18,6 +19,8 @@ namespace N_Gewinnt
         public int currentPlayer = 1;
         public double paddingX { get; set; }
         public double paddingY { get; set; }
+        public bool isAnimating { get; set; }
+        public int[] usedSpaces { get; set; }
 
         public MainWindow()
         {
@@ -33,9 +36,15 @@ namespace N_Gewinnt
 
                 paddingX = 20;
                 paddingY = 240;
-
+                isAnimating = false;
                 spielfeld = new Spielfeld(cols, rows, paddingX, paddingY, Cvs, currentPlayer);
                 chip = new Chip(0, spielfeld.cellWidth, paddingX, paddingY, currentPlayer, Cvs, cols, rows);
+
+                usedSpaces = new int[cols];
+                foreach (int col in usedSpaces)
+                {
+                    usedSpaces[col] = 0;
+                }
             }
             else
             {
@@ -48,6 +57,29 @@ namespace N_Gewinnt
             // spielfeld = new Spielfeld(cols, rows, paddingX, paddingY);
             spielfeld.Draw(Cvs);
             chip.Draw(Cvs, 0, spielfeld.cellWidth);
+        }
+
+        private void Wnd_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (chip != null)
+            {
+                if (!isAnimating)
+                {
+                    if (e.Key == Key.Left)
+                    {
+                        chip.MoveLeft();
+                    }
+                    else if (e.Key == Key.Right)
+                    {
+                        chip.MoveRight();
+                    }
+                    else if (e.Key == Key.Left)
+                    {
+                        isAnimating = true;
+                        chip.MoveDown();
+                    }
+                }
+            }
         }
     }
 }

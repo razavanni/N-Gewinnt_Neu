@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace N_Gewinnt
@@ -9,6 +11,9 @@ namespace N_Gewinnt
     {
         public Ellipse Ball { get; set; }
         public Canvas Cvs { get; set; }
+        public MainWindow Wnd { get; set; }
+        public Spielfeld spielfeld { get; set; }
+
         public int Column { get; set; }
         public int Row { get; set; }
         public double diameter { get; set; }
@@ -46,7 +51,7 @@ namespace N_Gewinnt
 
         public void Draw(Canvas c, double column, double cellWidth)
         {
-            if(Ball != null)
+            if (Ball != null)
             {
                 diameter = cellWidth;
                 Ball.Width = diameter;
@@ -61,23 +66,71 @@ namespace N_Gewinnt
             }
         }
 
-        // public void NewChip()
-        // {
-        //     if(currentPlayer == 1)
-        //     {
-        //         Ball.Fill = Brushes.Blue;
-        //         currentPlayer = 2;
-        //     }
-        //     else if(currentPlayer == 2)
-        //     {
-        //         Ball.Fill = Brushes.Red;
-        //         currentPlayer = 1;
-        //     }
-        // 
-        //     double cellWidth = (SystemParameters.PrimaryScreenWidth * 0.7 - paddingX) / cols;
-        //     int col = Column;
-        // 
-        //     Draw(Cvs, col, cellWidth);
-        // }
+        public void MoveLeft()
+        {
+            if (Ball != null)
+            {
+                if (Column > 0)
+                {
+                    Column--;
+                    double cellWidth = (SystemParameters.PrimaryScreenWidth * 0.9 - paddingX) / cols;
+                    double chipX = Column * cellWidth + (cellWidth - Ball.Width) / 2 + paddingX;
+                    Canvas.SetLeft(Ball, chipX);
+                }
+            }
+        }
+        public void MoveRight()
+        {
+            if (Ball != null)
+            {
+                if (Column < cols - 1)
+                {
+                    Column++;
+                    double cellWidth = (SystemParameters.PrimaryScreenWidth * 0.9 - paddingX) / cols;
+                    double chipX = Column * cellWidth + (cellWidth - Ball.Width) / 2 + paddingX;
+                    Canvas.SetLeft(Ball, chipX);
+                }
+            }
+        }
+        public void MoveDown()
+        {
+            double screenHeight = SystemParameters.PrimaryScreenHeight * 0.9;
+            double chipHeight = Ball.Height;
+
+            int targetRow = 0;
+
+            for (int row = 0; row < rows; row++)
+            {
+                double rowTop = paddingY + row * (screenHeight * 0.9) / rows;
+                if (rowTop > Canvas.GetTop(Ball))
+                {
+                    break;
+                }
+                targetRow = row;
+            }
+
+            int col = Column;
+
+            Wnd.usedSpaces[col]++;
+
+            DoubleAnimation animation = new DoubleAnimation
+            {
+                From = Canvas.GetTop(Ball),
+                To = paddingY + spielfeld.boardHeight - chipHeight * Wnd.usedSpaces[col],
+                Duration = TimeSpan.FromSeconds(0.5)
+            };
+
+            animation.Completed += (sender, e) =>
+            {
+                Wnd.isAnimating = false;
+
+                if (Canvas.GetTop(Ball) > screenHeight - chipHeight * Wnd.usedSpaces[col])
+                {
+                    // NEw ball
+                }
+            };
+
+            Ball.BeginAnimation(Canvas.TopProperty, animation);
+        }
     }
 }
