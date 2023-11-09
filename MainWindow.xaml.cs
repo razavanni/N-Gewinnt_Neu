@@ -32,9 +32,10 @@ namespace N_Gewinnt
                 n = dlg.GetN();
 
                 paddingX = 20;
-                paddingY = 200;
+                paddingY = 240;
 
                 spielfeld = new Spielfeld(cols, rows, paddingX, paddingY, Cvs, currentPlayer);
+                chip = new Chip(0, spielfeld.cellWidth, paddingX, paddingY, currentPlayer, Cvs, cols, rows);
             }
             else
             {
@@ -46,6 +47,7 @@ namespace N_Gewinnt
         {
             // spielfeld = new Spielfeld(cols, rows, paddingX, paddingY);
             spielfeld.Draw(Cvs);
+            chip.Draw(Cvs, 0, spielfeld.cellWidth);
         }
     }
 }
