@@ -20,20 +20,45 @@ namespace N_Gewinnt
     /// </summary>
     public partial class MainWindow : Window
     {
+        StartWindow dlg;
+        Spielfeld spielfeld;
+        Chip chip;
+
+
+        public int cols { get; set; }
+        public int rows { get; set; }
+        public int n { get; set; }
+        public int currentPlayer = 1;
+        public double paddingX { get; set; }
+        public double paddingY { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
 
-            StartWindow dlg = new StartWindow();
+            dlg = new StartWindow();
 
             if ((bool)dlg.ShowDialog())
             {
-                MessageBox.Show($"Columns: {dlg.GetColumns()}, Rows: {dlg.GetRows()}, N: {dlg.GetN()}");
+                cols = dlg.GetColumns();
+                rows = dlg.GetRows();
+                n = dlg.GetN();
+
+                paddingX = 20;
+                paddingY = 200;
+
+                spielfeld = new Spielfeld(cols, rows, paddingX, paddingY);
             }
             else
             {
                 Close();
             }
+        }
+
+        private void Wnd_Loaded(object sender, RoutedEventArgs e)
+        {
+            // spielfeld = new Spielfeld(cols, rows, paddingX, paddingY);
+            spielfeld.Draw(Cvs);
         }
     }
 }
