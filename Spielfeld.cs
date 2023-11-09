@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Security;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
@@ -24,15 +18,20 @@ namespace N_Gewinnt
         public int rows { get; set; }
         public double paddingX { get; set; }
         public double paddingY { get; set; }
+        public Canvas Cvs { get; set; }
+        public int currentPlayer { get; set; }
 
-        public Spielfeld(int columns, int rows, double paddingX, double paddingY)
+        public Spielfeld(int columns, int rows, double paddingX, double paddingY, Canvas c, int currentPlayer)
         {
             this.columns = columns;
             this.rows = rows;
             this.paddingX = paddingX;
             this.paddingY = paddingY;
+            this.Cvs = c;
+            this.currentPlayer = currentPlayer;
 
-            chip = new Chip(0);
+            chip = new Chip(0, cellWidth, paddingX, paddingY, currentPlayer, Cvs, columns, rows);
+            // chip.Draw(Cvs, 0, cellWidth);
         }
 
         public void Draw(Canvas c)
